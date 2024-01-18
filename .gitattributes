@@ -1,0 +1,2 @@
+超オセロ/ filter=lfs diff=lfs merge=lfs -text
+超オセロ/Assets filter=lfs diff=lfs merge=lfs -text
