@@ -26,11 +26,17 @@ public class Bord : MonoBehaviour
     float reversi_timer_limit = 10.5f;
     bool end = false;
     public bool CanChange = false;
-    public bool m_Initialize = false;
+    public bool m_Initialize = true;
+    public float initializetimer = 10.0f;
 
     public komapieces KomaPiecesUI;
 
+    public int m_cantputPassnum = 0;
+    public bool m_addnum = false;
 
+    public bool endGame = false;
+    public GameObject m_GameEndButton;
+    public bool hoge;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,15 +58,61 @@ public class Bord : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        if (initializetimer <= 0.0f && m_Initialize)
+        {
+            m_Initialize = false;
+            Debug.Log("初期化完了");
+        }
+        else
+        {
+            initializetimer -= Time.fixedDeltaTime;
+        }
+        
         if (player1.m_passUI.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PAss"))
         {
             CanChange = false;
         }
-        UpdateBord();        
+        UpdateBord();
+        EndCheck();
 
-      
+
+
     }
+    void EndCheck()
+    {
 
+        if(m_Initialize)
+        {
+            Debug.Log("今初期化中 in da EndCheck");
+            return;
+        }
+        if (!passbutton.canReversKoma && !m_addnum)
+        {
+            m_cantputPassnum++;
+            m_addnum = true;
+        }
+        if(passbutton.canReversKoma)
+        {
+            m_cantputPassnum = 0;
+        }
+        if(m_cantputPassnum >= 2)//二人とも置けない！オセロ強制終了ボタン！
+        {
+            m_GameEndButton.SetActive(true); 
+        }
+        else
+        {
+            m_GameEndButton.SetActive(false);
+        }
+
+
+        if(KomaPiecesUI.white_koma_pieces==0||KomaPiecesUI.black_koma_pieces==0)
+        {
+            //おわり
+            endGame = true;
+            Debug.Log("おわり　片方のコマが全滅");
+        }
+    }
     void UpdateBord()
     {
 
@@ -109,6 +161,7 @@ public class Bord : MonoBehaviour
     }
     public void FlipCheck()//マジですまないが、この中にkomapiecesの更新処理が入っている。
     {
+        int emptykomanum = 0;
         KomaPiecesUI.Resetnum();
         passbutton.canReversKoma = false;
         for (int i = 0; i < 8; i++)
@@ -125,7 +178,7 @@ public class Bord : MonoBehaviour
                 }
                 if (komas[i, j].GetState() != KOMA_STATE.Empty)
                 {
-                   
+                    emptykomanum++;
                 }
                 else
                 {
@@ -178,6 +231,12 @@ public class Bord : MonoBehaviour
 
                 }
             }
+        }
+        if(emptykomanum==64)
+        {
+            //終わり
+            endGame = true;
+            Debug.Log("おわり 捲れる空きコマがない");
         }
     }
     void FlipCheckReset()

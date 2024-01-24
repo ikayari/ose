@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Result.unity
     guid: a369c820ecf3c5b44bdc838fafa02ce3
+  - enabled: 1
+    path: Assets/Scenes/Test/ReversiTest.unity
+    guid: c0a8ca7bde70b8b42a024d2c9c1005eb
   m_configObjects: {}

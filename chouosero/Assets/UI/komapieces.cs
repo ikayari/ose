@@ -7,8 +7,8 @@ using TMPro;
 public class komapieces : MonoBehaviour
 {
     public Bord bord;
-    public int black_koma_pieces;
-    public int white_koma_pieces;
+    public int black_koma_pieces=2;
+    public int white_koma_pieces=2;
     [SerializeField] private TextMeshProUGUI Black;
     [SerializeField] private TextMeshProUGUI White;
     // Start is called before the first frame update
