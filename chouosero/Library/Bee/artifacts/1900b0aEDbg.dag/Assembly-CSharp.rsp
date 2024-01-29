@@ -369,6 +369,7 @@
 "Assets/Reversi/Script/Koma.cs"
 "Assets/Reversi/Script/Player.cs"
 "Assets/Reversi/Script/PlayerStateUI.cs"
+"Assets/Reversi/Script/Result/Result.cs"
 "Assets/SceneChange.cs"
 "Assets/Scenes/Fade/FadeInOut.cs"
 "Assets/SpotLight/SpotLightTargetMouthPos.cs"
