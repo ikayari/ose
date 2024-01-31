@@ -18,7 +18,7 @@ public class Bord : MonoBehaviour
     public GameObject komaRoot;
 
     public List<Koma> komalist;
-    public Koma [,] komas = new Koma[8, 8];
+    public Koma[,] komas = new Koma[8, 8];
     public PassButton passbutton;
     private int[,] bord = new int[8, 8];
     public Player player1;
@@ -42,12 +42,12 @@ public class Bord : MonoBehaviour
     {
         int j = 0;
         int k = 0;
-        for (int i=0;i<komalist.Count;i++)
+        for (int i = 0; i < komalist.Count; i++)
         {
 
-            komas[j,k] = komalist[i];
+            komas[j, k] = komalist[i];
             k++;
-            if(k>7)
+            if (k > 7)
             {
                 j++;
                 k = 0;
@@ -58,7 +58,7 @@ public class Bord : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         if (initializetimer <= 0.0f && m_Initialize)
         {
             m_Initialize = false;
@@ -68,7 +68,7 @@ public class Bord : MonoBehaviour
         {
             initializetimer -= Time.fixedDeltaTime;
         }
-        
+
         if (player1.m_passUI.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PAss"))
         {
             CanChange = false;
@@ -82,7 +82,7 @@ public class Bord : MonoBehaviour
     void EndCheck()
     {
 
-        if(m_Initialize)
+        if (m_Initialize)
         {
             Debug.Log("今初期化中 in da EndCheck");
             return;
@@ -92,13 +92,13 @@ public class Bord : MonoBehaviour
             m_cantputPassnum++;
             m_addnum = true;
         }
-        if(passbutton.canReversKoma)
+        if (passbutton.canReversKoma)
         {
             m_cantputPassnum = 0;
         }
-        if(m_cantputPassnum >= 2)//二人とも置けない！オセロ強制終了ボタン！
+        if (m_cantputPassnum >= 2)//二人とも置けない！オセロ強制終了ボタン！
         {
-            m_GameEndButton.SetActive(true); 
+            m_GameEndButton.SetActive(true);
         }
         else
         {
@@ -106,7 +106,7 @@ public class Bord : MonoBehaviour
         }
 
 
-        if(KomaPiecesUI.white_koma_pieces==0||KomaPiecesUI.black_koma_pieces==0)
+        if (KomaPiecesUI.white_koma_pieces == 0 || KomaPiecesUI.black_koma_pieces == 0)
         {
             //おわり
             endGame = true;
@@ -135,26 +135,32 @@ public class Bord : MonoBehaviour
                     i++;
                     reversi_timer += Time.deltaTime;
                 }
-                else if(reversi_timer <= reversi_timer_limit)
+                else if (reversi_timer <= reversi_timer_limit)
                 {
                     reversi_timer += Time.deltaTime;
-                    
+
                     continue;
                 }
-                else if(reversi_timer >= reversi_timer_limit)
+                else if (reversi_timer >= reversi_timer_limit)
                 {
                     reversi_timer = 0.0f;
-                    
+
                     continue;
                 }
                 end = true;
             }
-            if(end)
+            if (end)
             {
                 end = false;
-                player1.PlayerStateChange();
+                //2回行動コマなら手番を交代しない、手助けしたなら色を変えない
+                if (player1.TwoMoveState == false && player1.SupportMoveState == false)
+                {
+                    player1.PlayerStateChange();
+                }
                 player1.Koma.Clear();
                 player1.chose_koma = false;
+                player1.TwoMoveState = false;
+                player1.SupportMoveState = false;
                 CanChange = false;
             }
         }
@@ -232,7 +238,7 @@ public class Bord : MonoBehaviour
                 }
             }
         }
-        if(emptykomanum==64)
+        if (emptykomanum == 64)
         {
             //終わり
             endGame = true;
@@ -254,7 +260,7 @@ public class Bord : MonoBehaviour
     {
 
     }
-     void GetChildren(GameObject obj)
+    void GetChildren(GameObject obj)
     {
         Transform children = obj.GetComponentInChildren<Transform>();
         //子要素がいなければ終了
@@ -329,6 +335,9 @@ public class Bord : MonoBehaviour
                 {
                     //つまるところめくれるはず！
                     komas[x, y].SetFlipCan(true);
+
+                    //AIの為に、置ける場所を探してlistへ入れる。
+                    player1.AICanPutPlace.Add(komas[x, y]);
 
                     //めくれる部分登録する！
                     for (int k = 1; k < i; k++)

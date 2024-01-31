@@ -66,7 +66,7 @@ public class Koma : MonoBehaviour
         }
         koma_Initialize = true;
     }
-   private void SetKomaPosition(int[,] komapos)
+    private void SetKomaPosition(int[,] komapos)
     {
         koma_Position = komapos;
     }
@@ -80,10 +80,10 @@ public class Koma : MonoBehaviour
     }
     private void ChangeKomaState()
     {
-        if(koma_State==KOMA_STATE.Black)
+        if (koma_State == KOMA_STATE.Black)
         {
             koma_State = KOMA_STATE.White;
-            
+
         }
         else
         {
@@ -94,7 +94,7 @@ public class Koma : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!IsCanChange())
+        if (!IsCanChange())
         {
             bord.CanChange = false;
         }
@@ -102,7 +102,7 @@ public class Koma : MonoBehaviour
         animator.SetInteger("State", (int)koma_State);
         animator.SetBool("Change", koma_Change);
         KomaChange();
-        if(GetComponent<Animator>().enabled==false)
+        if (GetComponent<Animator>().enabled == false)
         {
             Invoke("KomaDelete", 1.0f);
         }
@@ -120,7 +120,7 @@ public class Koma : MonoBehaviour
     }
     bool IsCanChange()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("WhiteIdle") || animator.GetCurrentAnimatorStateInfo(0).IsName("BlackIdle")|| animator.GetCurrentAnimatorStateInfo(0).IsName("New State"))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("WhiteIdle") || animator.GetCurrentAnimatorStateInfo(0).IsName("BlackIdle") || animator.GetCurrentAnimatorStateInfo(0).IsName("New State"))
         {
             return true;
         }
@@ -136,8 +136,8 @@ public class Koma : MonoBehaviour
         if (koma_Change)
         {
 
-           
-            if(!IsCanChange())
+
+            if (!IsCanChange())
             {
                 return;
             }
