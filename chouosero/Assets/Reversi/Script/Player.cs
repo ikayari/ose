@@ -72,6 +72,11 @@ public class Player : MonoBehaviour
         {
             return;
         }
+        //かつ初期化されていれば。
+        if (!m_bord.m_Initialize)
+        {
+            return;
+        }
 
         //置ける場所が1つ以上あれば。
         if (AICanPutPlace.Count >= 1)
@@ -114,6 +119,11 @@ public class Player : MonoBehaviour
             //人がプレイする手番になったらプレイ出来ないように。
             return;
         }*/
+        //かつ初期化されてなかったらreturn
+        if (m_bord.m_Initialize)
+        {
+            return;
+        }
 
         if (TwoMoveState == true)
         {
@@ -133,6 +143,7 @@ public class Player : MonoBehaviour
         {
             return;
         }
+
 
         //置ける場所が1つ以上あれば。
         if (AICanPutPlace.Count >= 1)
@@ -225,7 +236,7 @@ public class Player : MonoBehaviour
         {
             playerState = KOMA_STATE.Black;
         }
-        AICanPutPlace.Clear();
+
     }
 
     public void PlayerPass()

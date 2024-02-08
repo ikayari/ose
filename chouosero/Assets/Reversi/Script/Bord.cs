@@ -40,6 +40,7 @@ public class Bord : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         int j = 0;
         int k = 0;
         for (int i = 0; i < komalist.Count; i++)
@@ -118,6 +119,7 @@ public class Bord : MonoBehaviour
     {
 
         FlipCheckReset();
+        player1.AICanPutPlace.Clear();
         if (CanChange)
         {
             FlipCheck();
