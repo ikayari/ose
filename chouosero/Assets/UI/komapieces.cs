@@ -20,8 +20,8 @@ public class komapieces : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Black.text = "Black:" + black_koma_pieces.ToString("D2");
-        White.text = "White:" + white_koma_pieces.ToString("D2");
+        Black.text =black_koma_pieces.ToString("D2");
+        White.text =white_koma_pieces.ToString("D2");
     }
     public void UpdateUI()
     {

@@ -112,6 +112,7 @@ public class Bord : MonoBehaviour
             endGame = true;
             Debug.Log("おわり　片方のコマが全滅");
         }
+
     }
     void UpdateBord()
     {
