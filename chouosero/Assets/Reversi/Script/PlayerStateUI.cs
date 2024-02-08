@@ -18,12 +18,17 @@ public class PlayerStateUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(m_player.playerState==KOMA_STATE.Black)
+        if (m_player.SupportMoveState == true)
+        {
+            return;
+        }
+
+        if (m_player.playerState == KOMA_STATE.Black)
         {
             StateBlack.SetActive(true);
             StateWhite.SetActive(false);
         }
-        else if(m_player.playerState==KOMA_STATE.White)
+        else if (m_player.playerState == KOMA_STATE.White)
         {
             StateBlack.SetActive(false);
             StateWhite.SetActive(true);

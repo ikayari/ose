@@ -21,7 +21,8 @@ public class Player : MonoBehaviour
     float AIlearning_timer_limit = 0.8f;//AI抽出時に使う時間。
 
     //特殊ゴマ関係
-
+    public SpecialKoma m_SpeKoma;
+    public bool OnceAction = false;
     /// <summary>
     /// 2回行動ゴマ。このコマを置くともう一度自分の番。
     /// コマの発生に制限を付けないと無限に手番を行える。
@@ -65,6 +66,12 @@ public class Player : MonoBehaviour
 
         Koma.Clear();//初期化。
 
+        //1度だけコマの抽選を行う。
+        if (OnceAction == false)
+        {
+            m_SpeKoma.SelectKoma();
+        }
+
         //遅延を入れないと複数選んでしまう為。
         AI_timer += Time.deltaTime;
 
@@ -89,7 +96,10 @@ public class Player : MonoBehaviour
                 //ランダムに選んだ場所にコマを追加。
                 Koma.Add(AICanPutPlace[randomIndex]);
                 chose_koma = true;
-                AI = false;
+                if (TwoMoveState == false)
+                {
+                    AI = false;
+                }
 
                 AI_timer = 0.0f;
             }
@@ -125,16 +135,13 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (TwoMoveState == true)
-        {
-            Koma.Clear();
-            TwoMoveState = false;
-            AI = false;
-            PlayerStateChange();
-            return;
-        }
-
         Koma.Clear();//初期化。
+
+        //1度だけコマの抽選を行う。
+        if (OnceAction == false)
+        {
+            m_SpeKoma.SelectKoma();
+        }
 
         //遅延を入れないと複数選んでしまう為。
         AI_timer += Time.deltaTime;
@@ -146,7 +153,8 @@ public class Player : MonoBehaviour
 
 
         //置ける場所が1つ以上あれば。
-        if (AICanPutPlace.Count >= 1)
+        //特殊ゴマを使う判定後。
+        if (OnceAction == true && AICanPutPlace.Count >= 1)
         {
             //コマを置ける場所を最大数としたListの中でランダムに場所を選ぶ。
             var randomIndex = UnityEngine.Random.Range(0, AICanPutPlace.Count);
@@ -156,13 +164,17 @@ public class Player : MonoBehaviour
                 //ランダムに選んだ場所にコマを追加。
                 Koma.Add(AICanPutPlace[randomIndex]);
                 chose_koma = true;
-                AI = false;
+                if (TwoMoveState == false)
+                {
+                    AI = false;
+                }
 
                 AI_timer = 0.0f;
             }
         }
         else
         {
+            //パス。
             PlayerStateChange();
             AI = false;
 
@@ -182,17 +194,21 @@ public class Player : MonoBehaviour
         //2回行動
         if (Input.GetKeyDown(KeyCode.A))
         {
-            TwoMoveState = true;
+            TwoMoveStateTrue();
         }
 
 
         //手助け
         if (Input.GetKeyDown(KeyCode.S))
         {
-            SupportMoveState = true;
-            PlayerStateChange();
+            SupportMoveStateTrue();
         }
 
+        //1度だけコマの抽選を行う。
+        if (OnceAction == false)
+        {
+            m_SpeKoma.SelectKoma();
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -246,5 +262,16 @@ public class Player : MonoBehaviour
         PlayerStateChange();
         m_bord.CanChange = false;
         m_bord.m_addnum = false;
+    }
+
+    public void TwoMoveStateTrue()
+    {
+        TwoMoveState = true;
+    }
+
+    public void SupportMoveStateTrue()
+    {
+        SupportMoveState = true;
+        PlayerStateChange();
     }
 }

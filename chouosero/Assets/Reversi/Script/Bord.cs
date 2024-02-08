@@ -30,6 +30,7 @@ public class Bord : MonoBehaviour
     public float initializetimer = 10.0f;
 
     public komapieces KomaPiecesUI;
+    public SpecialKoma m_SpeKoma;
 
     public int m_cantputPassnum = 0;
     public bool m_addnum = false;
@@ -164,6 +165,7 @@ public class Bord : MonoBehaviour
                 player1.chose_koma = false;
                 player1.TwoMoveState = false;
                 player1.SupportMoveState = false;
+                player1.OnceAction = false;
                 CanChange = false;
             }
         }
@@ -172,6 +174,7 @@ public class Bord : MonoBehaviour
     {
         int emptykomanum = 0;
         KomaPiecesUI.Resetnum();
+        m_SpeKoma.ResetBordPutKomaCount();
         passbutton.canReversKoma = false;
         for (int i = 0; i < 8; i++)
         {
@@ -180,10 +183,12 @@ public class Bord : MonoBehaviour
                 if (komas[i, j].GetState() == KOMA_STATE.Black)
                 {
                     KomaPiecesUI.black_koma_pieces++;
+                    m_SpeKoma.BordPutKomaCount++;
                 }
                 else if (komas[i, j].GetState() == KOMA_STATE.White)
                 {
                     KomaPiecesUI.white_koma_pieces++;
+                    m_SpeKoma.BordPutKomaCount++;
                 }
                 if (komas[i, j].GetState() != KOMA_STATE.Empty)
                 {
@@ -340,7 +345,10 @@ public class Bord : MonoBehaviour
                     komas[x, y].SetFlipCan(true);
 
                     //AI‚Ìˆ×‚ÉA’u‚¯‚éêŠ‚ð’T‚µ‚Älist‚Ö“ü‚ê‚éB
-                    player1.AICanPutPlace.Add(komas[x, y]);
+                    if (player1.OnceAction == true)
+                    {
+                        player1.AICanPutPlace.Add(komas[x, y]);
+                    }
 
                     //‚ß‚­‚ê‚é•”•ª“o˜^‚·‚éI
                     for (int k = 1; k < i; k++)
